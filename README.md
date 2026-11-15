@@ -2,6 +2,8 @@
 
 Ani is an offline-first Android/iOS app (Flutter) that gives smallholder farmers in Nueva Ecija (Guimba, Science City of Muñoz, Bongabon) advice on what to plant in an El Niño dry season, in Filipino and English. It answers five questions (town, last two crops, irrigations available, crops you won't plant, priorities) and shows up to three suggested crops, or a "Huwag munang magtanim" (Hold) message when no crop is safe. A planted crop can then be tracked stage by stage with water and heat alerts.
 
+**Try it in your browser:** https://alyastanga.github.io/Ani/ (web build of the app, deployed from the `gh-pages` branch).
+
 **Ani is advisory only.** It is a decision aid, not a guarantee. Estimates come from past weather and a simple field model, and local conditions differ. Always confirm with the Municipal Agriculture Office (MAO) before committing seed, labour or money.
 
 ## How the data flows
