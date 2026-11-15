@@ -48,7 +48,7 @@ class ResultScreen extends StatelessWidget {
               ],
             ),
             Text(
-              result.isHold ? result.message!.title : l.resultTitle,
+              result.isHold ? (l.localeName == 'fil' ? result.message!.title : l.holdTitle) : l.resultTitle,
               key: const ValueKey('result-title'),
               style: theme.textTheme.headlineMedium?.copyWith(
                 color: result.isHold ? AniColors.statusDelikado : AniColors.ink,
@@ -142,9 +142,7 @@ class CropCardView extends StatelessWidget {
                   children: [
                     Eyebrow(l.cardRank(rank)),
                     const SizedBox(height: AniSpacing.xxs),
-                    Text(card.name, style: theme.textTheme.headlineSmall?.copyWith(color: AniColors.ink)),
-                    if (gloss != null)
-                      Text(gloss, style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
+                    Text(l.cropNameOf(card.crop), style: theme.textTheme.headlineSmall?.copyWith(color: AniColors.ink)),
                   ],
                 ),
               ),
@@ -181,7 +179,7 @@ class CropCardView extends StatelessWidget {
                     padding: EdgeInsets.only(top: 7, right: AniSpacing.sm),
                     child: Icon(Icons.circle, size: 6, color: AniColors.olive),
                   ),
-                  Expanded(child: Text(w, style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.ink))),
+                  Expanded(child: Text(l.localizeWhy(w), style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.ink))),
                 ],
               ),
             ),
@@ -307,7 +305,7 @@ class HoldView extends StatelessWidget {
           icon: Icons.support_agent,
           color: AniColors.statusDelikado,
           background: AniColors.statusDelikadoBg,
-          text: m.refer,
+          text: fil ? m.refer : l.consultMao,
           bold: true,
         ),
       ],

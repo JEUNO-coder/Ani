@@ -288,6 +288,39 @@ class AniNavItem {
   final String label;
 }
 
+/// Top application header bar in the Make style matching [AniBottomNav]:
+/// paper background, bottom hairline border, and a subtle drop down shadow.
+class AniAppHeader extends StatelessWidget {
+  const AniAppHeader({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AniColors.paper,
+        border: const Border(bottom: BorderSide(color: AniColors.line)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Container(
+          height: 52,
+          padding: const EdgeInsets.symmetric(horizontal: AniSpacing.screen),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 /// Bottom navigation in the Make style: paper bar with a top hairline,
 /// active tab olive with a pale olive pill behind the icon.
 class AniBottomNav extends StatelessWidget {

@@ -19,16 +19,35 @@ extension RecommendLabels on AppLocalizations {
       };
 
   /// English gloss of a crop name (shown in the English locale only).
-  String? cropGlossOf(String id) {
-    if (localeName != 'en') return null;
-    return switch (id) {
-      CropId.rice => cropPalayGloss,
-      CropId.onion => cropSibuyasGloss,
-      CropId.mungbean => cropMunggoGloss,
-      CropId.maize => cropMaisGloss,
-      CropId.sweetPotato => cropKamoteGloss,
-      _ => null,
-    };
+  String? cropGlossOf(String id) => null;
+
+  /// Localizes planner.py reason strings to English when locale is English.
+  String localizeWhy(String why) {
+    if (localeName != 'en') return why;
+    if (why.startsWith('Kita:')) {
+      return why
+          .replaceFirst('Kita: mga', 'Income: about')
+          .replaceFirst('bawat ektarya', 'per hectare')
+          .replaceFirst('(gitnang tantiya)', '(median estimate)');
+    }
+    if (why.startsWith('Tsansang masira:')) {
+      return why.replaceFirst('Tsansang masira:', 'Risk of failure:');
+    }
+    if (why == 'Mababa ang tsansang masira ngayong tag-araw') {
+      return 'Low risk of failure this dry season';
+    }
+    if (why.startsWith('Kaunting tubig:')) {
+      return why
+          .replaceFirst('Kaunting tubig: mga', 'Low water need: about')
+          .replaceFirst('sa buong panahon', 'over the season');
+    }
+    if (why == 'Nagdadagdag ng nitrogen sa lupa (legume)') {
+      return 'Adds nitrogen to the soil (legume)';
+    }
+    if (why == 'Iba ang pamilya sa huling tanim: pumuputol sa siklo ng peste') {
+      return 'Different family from last crop: breaks the pest cycle';
+    }
+    return why;
   }
 
   String waterLevelName(String water) => switch (water) {

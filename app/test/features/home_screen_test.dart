@@ -115,7 +115,7 @@ void main() {
     expect(b.enso.isElNino, isTrue);
 
     // El Niño outlook card.
-    expect(_inKey('home-enso', find.text('Inaasahan ang El Niño ngayong tag-araw')), findsOneWidget);
+    expect(_inKey('home-enso', find.text('El Niño expected this dry season')), findsOneWidget);
     expect(_inKey('home-enso', find.text('Very strong')), findsOneWidget);
     expect(_inKey('home-enso', find.text('El Niño')), findsOneWidget);
     expect(_inKey('home-enso', find.textContaining(b.enso.comingSeason.toUpperCase())), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
     // Heat-safety strip: PAGASA categories from the bundle, safety-only advice.
     expect(_inKey('home-heat', find.text('Heat safety'.toUpperCase())), findsOneWidget);
     expect(_inKey('home-heat', find.text('On Danger days (heat index 42°C and up):')), findsOneWidget);
-    expect(_inKey('home-heat', find.text('Magtrabaho nang maaga')), findsOneWidget);
+    expect(_inKey('home-heat', find.text('Work early')), findsOneWidget);
     expect(_inKey('home-heat', find.text('Caution 27–32°C')), findsOneWidget);
     expect(_inKey('home-heat', find.text('Extreme danger 52+°C')), findsOneWidget);
     expect(_inKey('home-heat', find.text("For people's safety only. Not used to choose crops.")), findsOneWidget);
@@ -183,7 +183,7 @@ void main() {
     final decembers = monthly.where((e) => (e[0] as String).substring(5) == latestMonth.substring(5)).length;
 
     await _start(tester, bundleJson: j);
-    expect(_inKey('home-dryness', find.text('Delikado')), findsOneWidget);
+    expect(_inKey('home-dryness', find.text('Danger')), findsOneWidget);
     expect(_inKey('home-dryness', find.text('D +9.00')), findsOneWidget);
     expect(_inKey('home-dryness', find.text('Driest of $decembers years')), findsOneWidget);
     final banner = tester.widget<Container>(find.byKey(const ValueKey('home-dryness')));
@@ -223,7 +223,7 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('home-last-rec-open')));
     await pumpUntil(tester, find.byKey(const ValueKey('result-screen')));
-    expect(find.text('Munggo'), findsWidgets);
+    expect(find.text('Mung bean'), findsWidgets);
   });
 
   testWidgets('saved profile from storage shows its town and water level', (tester) async {

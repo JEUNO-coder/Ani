@@ -4,6 +4,7 @@ import '../../app_state.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/theme.dart';
 import '../alerts/alerts_screen.dart';
+import '../home/settings_sheet.dart';
 import 'add_planting_screen.dart';
 import 'demo_screen.dart';
 import 'planting_detail_screen.dart';
@@ -38,24 +39,41 @@ class _FarmScreenState extends State<FarmScreen> {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final loaded = AppScope.of(context).trackerLoaded;
-    return SafeArea(
-      child: TrackerBuilder(builder: (context, t) {
-        final views = t?.views ?? const [];
-        final open = [for (final v in views) if (!v.isClosed) v];
-        final closed = [for (final v in views) if (v.isClosed) v];
-        return ListView(
-          key: const ValueKey('farm-list'),
-          padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.sm, AniSpacing.screen, AniSpacing.xxl),
-          children: [
-            Row(
+    return Column(
+      children: [
+        AniAppHeader(
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icon/logowithtext.png',
+                key: const ValueKey('farm-header-logo'),
+                height: 26,
+                fit: BoxFit.contain,
+              ),
+              const Spacer(),
+              const AlertsBell(),
+              IconButton(
+                key: const ValueKey('farm-settings'),
+                tooltip: l.settingsTitle,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => showSettingsSheet(context),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: TrackerBuilder(builder: (context, t) {
+            final views = t?.views ?? const [];
+            final open = [for (final v in views) if (!v.isClosed) v];
+            final closed = [for (final v in views) if (v.isClosed) v];
+            return ListView(
+              key: const ValueKey('farm-list'),
+              padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.lg, AniSpacing.screen, AniSpacing.xxl),
               children: [
-                Expanded(child: Text(l.navMyFarm, style: theme.textTheme.headlineMedium)),
-                const AlertsBell(),
-              ],
-            ),
-            const SyncStatusLine(),
-            const SizedBox(height: AniSpacing.md),
-            if (t == null || (!loaded && views.isEmpty))
+                Text(l.navMyFarm, style: theme.textTheme.headlineMedium),
+                const SyncStatusLine(),
+                const SizedBox(height: AniSpacing.md),
+                if (t == null || (!loaded && views.isEmpty))
               const Padding(
                 padding: EdgeInsets.all(AniSpacing.xxl),
                 child: Center(child: CircularProgressIndicator(color: AniColors.olive)),
@@ -134,6 +152,8 @@ class _FarmScreenState extends State<FarmScreen> {
           ],
         );
       }),
-    );
+    ),
+  ],
+);
   }
 }

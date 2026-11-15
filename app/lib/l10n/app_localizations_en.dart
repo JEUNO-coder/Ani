@@ -77,6 +77,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsChangeLanguage => 'Change language';
 
   @override
+  String get settingsLogout => 'Log out';
+
+  @override
+  String get settingsLogoutConfirm => 'Are you sure you want to log out?';
+
+  @override
   String get aboutTitle => 'About and limits';
 
   @override
@@ -136,19 +142,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'MAO referral: for low-confidence results, Ani points you to your Municipal Agriculture Office.';
 
   @override
-  String get cropPalay => 'Palay';
+  String get cropPalay => 'Rice';
 
   @override
-  String get cropSibuyas => 'Sibuyas';
+  String get cropSibuyas => 'Onion';
 
   @override
-  String get cropMunggo => 'Munggo';
+  String get cropMunggo => 'Mung bean';
 
   @override
-  String get cropMais => 'Mais';
+  String get cropMais => 'Corn';
 
   @override
-  String get cropKamote => 'Kamote';
+  String get cropKamote => 'Sweet potato';
 
   @override
   String get cropPalayGloss => 'Rice';
@@ -160,34 +166,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cropMunggoGloss => 'Mung bean';
 
   @override
-  String get cropMaisGloss => 'Maize';
+  String get cropMaisGloss => 'Corn';
 
   @override
   String get cropKamoteGloss => 'Sweet potato';
 
   @override
-  String get holdTitle => 'Huwag munang magtanim';
+  String get holdTitle => 'Hold: Do not plant yet';
 
   @override
-  String get whyLabel => 'Bakit?';
+  String get whyLabel => 'Why';
 
   @override
   String get dryNormal => 'Normal';
 
   @override
-  String get dryBantay => 'Bantay';
+  String get dryBantay => 'Watch';
 
   @override
-  String get dryDelikado => 'Delikado';
+  String get dryDelikado => 'Danger';
 
   @override
-  String get consultMao => 'Kumonsulta sa MAO';
+  String get consultMao => 'Consult the MAO';
 
   @override
-  String get workEarly => 'Magtrabaho nang maaga';
+  String get workEarly => 'Work early';
 
   @override
-  String get elNinoExpected => 'Inaasahan ang El Niño ngayong tag-araw';
+  String get elNinoExpected => 'El Niño expected this dry season';
 
   @override
   String get homeCta => 'What should I plant?';
@@ -252,7 +258,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drynessChartTitle => 'Monthly dryness index';
 
   @override
-  String get drynessChartElNino => 'El Niño seasons';
+  String get drynessChartElNino => 'El Niño';
 
   @override
   String get heatSafetyTitle => 'Heat safety';
@@ -584,7 +590,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get cropRiskElNinoSeasons => 'El Niño seasons';
+  String get cropRiskElNinoSeasons => 'El Niño';
 
   @override
   String get cropRiskOtherSeasons => 'Other seasons';
@@ -664,7 +670,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get questionColdStorageLabel => 'Cold storage';
 
   @override
-  String get questionColdStorageHint => 'Matters for onion (Sibuyas) prices.';
+  String get questionColdStorageHint => 'Matters for onion prices.';
 
   @override
   String questionPrioritiesPicked(int count) {
@@ -970,6 +976,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get outlookPastSeasons => 'Past dry seasons';
 
   @override
+  String get outlookPastColSeason => 'Season';
+
+  @override
+  String get outlookPastColStatus => 'Status';
+
+  @override
+  String get showMore => 'Show more';
+
+  @override
+  String get showLess => 'Show less';
+
+  @override
   String get outlookLiveTitle => 'Dryness now';
 
   @override
@@ -984,6 +1002,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get outlookDekadsTitle => 'Last 10-day periods';
+
+  @override
+  String get outlookDekadColPeriod => 'Period';
+
+  @override
+  String get outlookDekadColDryness => 'Dryness (D)';
+
+  @override
+  String get outlookDekadColStatus => 'Status';
+
+  @override
+  String get outlookHeatColDate => 'Date';
+
+  @override
+  String get outlookHeatColIndex => 'Heat index (°C)';
+
+  @override
+  String get outlookHeatColStatus => 'Status';
 
   @override
   String outlookDekadRange(int from, int to, String month) {

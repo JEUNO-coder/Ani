@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/data/
     - assets/fixtures/
+    - assets/icon/
 
   fonts:
     - family: AsapCondensed

@@ -59,17 +59,16 @@ class PlantingRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AniSpacing.sm),
-              Flexible(
-                child: Wrap(
-                  alignment: WrapAlignment.end,
-                  spacing: AniSpacing.xs,
-                  runSpacing: AniSpacing.xs,
-                  children: [
-                    if (view.isDemo) AniPill(l.plantingDemoTag, color: AniColors.gold),
-                    AniPill(l.stageName(view.stage),
-                        key: ValueKey('planting-stage-${p.id}'), color: stageColor(view.stage)),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (view.isDemo) ...[
+                    AniPill(l.plantingDemoTag, color: AniColors.gold),
+                    const SizedBox(width: AniSpacing.xs),
                   ],
-                ),
+                  AniPill(l.stageName(view.stage),
+                      key: ValueKey('planting-stage-${p.id}'), color: stageColor(view.stage)),
+                ],
               ),
             ],
           ),
@@ -167,23 +166,33 @@ class StageTimeline extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: AniSpacing.md),
-                    child: Wrap(
-                      spacing: AniSpacing.sm,
-                      runSpacing: AniSpacing.xxs,
-                      crossAxisAlignment: WrapCrossAlignment.center,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          l.stageName(m.stage),
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            color: m.reached ? AniColors.ink : AniColors.muted,
-                            fontWeight: m.current ? FontWeight.w700 : null,
+                        Expanded(
+                          child: Wrap(
+                            spacing: AniSpacing.sm,
+                            runSpacing: AniSpacing.xxs,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                l.stageName(m.stage),
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  color: m.reached ? AniColors.ink : AniColors.muted,
+                                  fontWeight: m.current ? FontWeight.w700 : null,
+                                ),
+                              ),
+                              Text(
+                                m.reachedOn == null ? l.stageNotYet : fmtDate(context, m.reachedOn!),
+                                style: theme.textTheme.bodySmall?.copyWith(color: AniColors.muted),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          m.reachedOn == null ? l.stageNotYet : fmtDate(context, m.reachedOn!),
-                          style: theme.textTheme.bodySmall?.copyWith(color: AniColors.muted),
-                        ),
-                        if (m.current) AniPill(l.stageNow, color: stageColor(m.stage)),
+                        if (m.current) ...[
+                          const SizedBox(width: AniSpacing.sm),
+                          AniPill(l.stageNow, color: stageColor(m.stage)),
+                        ],
                       ],
                     ),
                   ),
@@ -250,17 +259,16 @@ class PlantingDetailBody extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AniSpacing.sm),
-                  Flexible(
-                    child: Wrap(
-                      alignment: WrapAlignment.end,
-                      spacing: AniSpacing.xs,
-                      runSpacing: AniSpacing.xs,
-                      children: [
-                        if (view.isDemo) AniPill(l.plantingDemoTag, color: AniColors.gold),
-                        AniPill(l.stageName(view.stage),
-                            key: const ValueKey('detail-stage'), color: stageColor(view.stage)),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (view.isDemo) ...[
+                        AniPill(l.plantingDemoTag, color: AniColors.gold),
+                        const SizedBox(width: AniSpacing.xs),
                       ],
-                    ),
+                      AniPill(l.stageName(view.stage),
+                          key: const ValueKey('detail-stage'), color: stageColor(view.stage)),
+                    ],
                   ),
                 ],
               ),
