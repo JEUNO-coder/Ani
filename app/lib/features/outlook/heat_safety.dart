@@ -77,17 +77,27 @@ class LiveHeatReading extends StatelessWidget {
 
 /// Heat-safety card for the Outlook tab: latest reading, recent days and the
 /// PAGASA bands.
-class HeatSafetyCard extends StatelessWidget {
+class HeatSafetyCard extends StatefulWidget {
   const HeatSafetyCard({super.key, required this.live});
 
   final LiveOutlook? live;
 
   @override
+  State<HeatSafetyCard> createState() => _HeatSafetyCardState();
+}
+
+class _HeatSafetyCardState extends State<HeatSafetyCard> {
+  bool _expanded = false;
+
+  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final heat = live?.heat ?? const <HeatDay>[];
-    final dangerDays = live?.dangerDays ?? 0;
+    final heat = widget.live?.heat ?? const <HeatDay>[];
+    final dangerDays = widget.live?.dangerDays ?? 0;
+    final all = heat.reversed.toList();
+    final items = _expanded ? all : all.take(5).toList();
+
     return AniCard(
       key: const ValueKey('outlook-heat'),
       child: Column(
@@ -101,22 +111,29 @@ class HeatSafetyCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AniSpacing.sm),
-          LiveHeatReading(live: live),
+          LiveHeatReading(live: widget.live),
           if (heat.length > 1) ...[
             const SizedBox(height: AniSpacing.md),
             Eyebrow(l.heatRecentTitle),
-            const SizedBox(height: AniSpacing.xs),
-            Wrap(
-              spacing: AniSpacing.xs,
-              runSpacing: AniSpacing.xs,
-              children: [
-                for (final h in heat)
-                  AniPill(
-                    '${DateFormat.Md(l.localeName).format(h.date)} ${_hi(h.hi)}°',
-                    color: bandColor(h.band),
-                  ),
-              ],
-            ),
+            const SizedBox(height: AniSpacing.sm),
+            const _HeatTableHeaderRow(),
+            const Divider(color: AniColors.line, height: 1, thickness: 1),
+            for (var i = 0; i < items.length; i++) ...[
+              if (i > 0) const Divider(color: AniColors.line, height: 1, thickness: 1),
+              _HeatTableRow(heatDay: items[i]),
+            ],
+            if (all.length > 5) ...[
+              const Divider(color: AniColors.line, height: 1, thickness: 1),
+              const SizedBox(height: AniSpacing.xs),
+              Center(
+                child: TextButton.icon(
+                  key: const ValueKey('outlook-heat-toggle'),
+                  onPressed: () => setState(() => _expanded = !_expanded),
+                  icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more, size: 18),
+                  label: Text(_expanded ? l.showLess : l.showMore),
+                ),
+              ),
+            ],
             if (dangerDays > 0) ...[
               const SizedBox(height: AniSpacing.sm),
               Text(
@@ -128,6 +145,101 @@ class HeatSafetyCard extends StatelessWidget {
           ],
           const SizedBox(height: AniSpacing.sm),
           Text(l.heatSafetyNote, style: theme.textTheme.bodySmall?.copyWith(color: AniColors.muted)),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeatTableHeaderRow extends StatelessWidget {
+  const _HeatTableHeaderRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final style = theme.textTheme.labelSmall?.copyWith(
+      color: AniColors.muted,
+      fontWeight: FontWeight.w600,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.xs),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              l.outlookHeatColDate,
+              key: const ValueKey('outlook-heat-header-date'),
+              style: style,
+            ),
+          ),
+          SizedBox(
+            width: 84,
+            child: Text(
+              l.outlookHeatColIndex,
+              key: const ValueKey('outlook-heat-header-index'),
+              textAlign: TextAlign.end,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AniSpacing.sm),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 64, maxWidth: 84),
+            child: Text(
+              l.outlookHeatColStatus,
+              key: const ValueKey('outlook-heat-header-status'),
+              textAlign: TextAlign.end,
+              style: style,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeatTableRow extends StatelessWidget {
+  const _HeatTableRow({required this.heatDay});
+
+  final HeatDay heatDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final label = bandLabel(heatDay.band);
+    final name = label == null ? l.dryNormal : l.heatCategoryName(label);
+    final color = bandColor(heatDay.band);
+    final dateStr = DateFormat.MMMd(l.localeName).format(heatDay.date);
+
+    return Padding(
+      key: ValueKey('heat-row-${DateFormat('yyyyMMdd').format(heatDay.date)}'),
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              dateStr,
+              style: theme.textTheme.bodyMedium,
+            ),
+          ),
+          SizedBox(
+            width: 84,
+            child: Text(
+              '${_hi(heatDay.hi)}°C',
+              textAlign: TextAlign.end,
+              style: theme.textTheme.titleSmall?.copyWith(color: color),
+            ),
+          ),
+          const SizedBox(width: AniSpacing.sm),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 64, maxWidth: 84),
+            child: Text(
+              name,
+              textAlign: TextAlign.end,
+              style: theme.textTheme.bodySmall?.copyWith(color: color, fontWeight: FontWeight.w600),
+            ),
+          ),
         ],
       ),
     );

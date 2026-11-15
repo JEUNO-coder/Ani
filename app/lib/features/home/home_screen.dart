@@ -36,51 +36,40 @@ class HomeScreen extends StatelessWidget {
     final bundle = state.bundle;
     final saved = state.plannerProfile;
 
-    return SafeArea(
-      child: ListView(
-        key: const ValueKey('home-list'),
-        padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.sm, AniSpacing.screen, AniSpacing.xxl),
-        children: [
-          // Olive hero panel, as in the Make prototype's "today" card.
-          Container(
-            decoration: const BoxDecoration(
-              color: AniColors.olive,
-              borderRadius: BorderRadius.all(Radius.circular(AniRadius.xl)),
-            ),
-            padding: const EdgeInsets.fromLTRB(AniSpacing.xl, AniSpacing.md, AniSpacing.sm, AniSpacing.xl),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: const BoxDecoration(color: AniColors.gold, shape: BoxShape.circle),
-                      child: const Icon(Icons.eco, size: 16, color: AniColors.paper),
-                    ),
-                    const SizedBox(width: AniSpacing.sm),
-                    Expanded(child: Eyebrow(l.appTitle, color: AniColors.sand)),
-                    const AlertsBell(color: AniColors.cream),
-                    IconButton(
-                      key: const ValueKey('home-settings'),
-                      tooltip: l.settingsTitle,
-                      icon: const Icon(Icons.settings_outlined, color: AniColors.cream),
-                      onPressed: () => showSettingsSheet(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AniSpacing.sm),
-                Text(
-                  town == null ? '' : l.townName(town),
-                  key: const ValueKey('home-town'),
-                  style: theme.textTheme.headlineMedium?.copyWith(color: AniColors.paper),
-                ),
-              ],
-            ),
+    return Column(
+      children: [
+        AniAppHeader(
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icon/logowithtext.png',
+                key: const ValueKey('home-header-logo'),
+                height: 26,
+                fit: BoxFit.contain,
+              ),
+              const Spacer(),
+              const AlertsBell(),
+              IconButton(
+                key: const ValueKey('home-settings'),
+                tooltip: l.settingsTitle,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => showSettingsSheet(context),
+              ),
+            ],
           ),
-          const SizedBox(height: AniSpacing.lg),
-          if (bundle != null) ...[
+        ),
+        Expanded(
+          child: ListView(
+            key: const ValueKey('home-list'),
+            padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.lg, AniSpacing.screen, AniSpacing.xxl),
+            children: [
+              Text(
+                town == null ? '' : l.townName(town),
+                key: const ValueKey('home-town'),
+                style: theme.textTheme.headlineMedium,
+              ),
+              const SizedBox(height: AniSpacing.lg),
+              if (bundle != null) ...[
             if (state.live?.latestWeather != null) ...[
               ConditionsCard(weather: state.live!.latestWeather),
               const SizedBox(height: AniSpacing.md),
@@ -108,7 +97,9 @@ class HomeScreen extends StatelessWidget {
           const _AlertsCard(),
         ],
       ),
-    );
+    ),
+  ],
+);
   }
 }
 

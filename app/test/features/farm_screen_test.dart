@@ -51,8 +51,8 @@ void main() {
     expect(find.textContaining('Filled in from your last planner answers'), findsOneWidget);
     expect(find.textContaining('Only matters for onion'), findsOneWidget);
 
-    // Crop names come from planner.NAME.
-    for (final n in ['Palay', 'Sibuyas', 'Munggo', 'Mais', 'Kamote']) {
+    // Crop names come from l.cropNameOf.
+    for (final n in ['Rice', 'Onion', 'Mung bean', 'Corn', 'Sweet potato']) {
       expect(find.text(n), findsOneWidget);
     }
     await tester.tap(_key('add-crop-mungbean'));
@@ -153,8 +153,8 @@ void main() {
     expect(_key('timeline-Failed'), findsOneWidget);
     expect(_key('timeline-Harvest'), findsNothing);
     expect(_key('detail-harvest-window'), findsNothing);
-    // Failed advice refers to the MAO in Filipino (doc-quoted).
-    expect(find.textContaining('Kumonsulta sa MAO'), findsWidgets);
+    // Failed advice refers to the MAO.
+    expect(find.textContaining('Consult the MAO'), findsWidgets);
 
     await tester.ensureVisible(_key('detail-remove'));
     await tester.tap(_key('detail-remove'));
@@ -197,7 +197,7 @@ void main() {
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(_key('farm-add'));
+    await tester.scrollUntilVisible(_key('farm-add'), 100);
     await tester.tap(_key('farm-add'));
     await tester.pumpAndSettle();
     expect(find.text('Magdagdag ng tanim'), findsWidgets);

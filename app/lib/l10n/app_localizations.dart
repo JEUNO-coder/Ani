@@ -224,6 +224,18 @@ abstract class AppLocalizations {
   /// **'Change language'**
   String get settingsChangeLanguage;
 
+  /// Settings action: log out / reset session
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get settingsLogout;
+
+  /// Confirmation message when logging out from settings
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get settingsLogoutConfirm;
+
   /// About page title
   ///
   /// In en, this message translates to:
@@ -320,34 +332,34 @@ abstract class AppLocalizations {
   /// **'MAO referral: for low-confidence results, Ani points you to your Municipal Agriculture Office.'**
   String get aboutSourceMao;
 
-  /// Crop name (rice); Filipino name used in both locales, from planner.NAME
+  /// Crop name (rice)
   ///
   /// In en, this message translates to:
-  /// **'Palay'**
+  /// **'Rice'**
   String get cropPalay;
 
-  /// Crop name (onion); Filipino name used in both locales, from planner.NAME
+  /// Crop name (onion)
   ///
   /// In en, this message translates to:
-  /// **'Sibuyas'**
+  /// **'Onion'**
   String get cropSibuyas;
 
-  /// Crop name (mung bean); Filipino name used in both locales, from planner.NAME
+  /// Crop name (mung bean)
   ///
   /// In en, this message translates to:
-  /// **'Munggo'**
+  /// **'Mung bean'**
   String get cropMunggo;
 
-  /// Crop name (maize); Filipino name used in both locales, from planner.NAME
+  /// Crop name (maize)
   ///
   /// In en, this message translates to:
-  /// **'Mais'**
+  /// **'Corn'**
   String get cropMais;
 
-  /// Crop name (sweet potato); Filipino name used in both locales, from planner.NAME
+  /// Crop name (sweet potato)
   ///
   /// In en, this message translates to:
-  /// **'Kamote'**
+  /// **'Sweet potato'**
   String get cropKamote;
 
   /// English gloss for Palay; UI may show it next to the name in English only
@@ -371,7 +383,7 @@ abstract class AppLocalizations {
   /// English gloss for Mais; UI may show it next to the name in English only
   ///
   /// In en, this message translates to:
-  /// **'Maize'**
+  /// **'Corn'**
   String get cropMaisGloss;
 
   /// English gloss for Kamote; UI may show it next to the name in English only
@@ -380,52 +392,52 @@ abstract class AppLocalizations {
   /// **'Sweet potato'**
   String get cropKamoteGloss;
 
-  /// Hold screen title; doc-quoted, Filipino in both locales
+  /// Hold screen title
   ///
   /// In en, this message translates to:
-  /// **'Huwag munang magtanim'**
+  /// **'Hold: Do not plant yet'**
   String get holdTitle;
 
-  /// Label for the reasons on a crop card; doc-quoted, Filipino in both locales
+  /// Label for the reasons on a crop card
   ///
   /// In en, this message translates to:
-  /// **'Bakit?'**
+  /// **'Why'**
   String get whyLabel;
 
-  /// Dryness alert level; doc-quoted, same in both locales
+  /// Dryness alert level; same in both locales
   ///
   /// In en, this message translates to:
   /// **'Normal'**
   String get dryNormal;
 
-  /// Dryness alert level (watch); doc-quoted, Filipino in both locales
+  /// Dryness alert level (watch)
   ///
   /// In en, this message translates to:
-  /// **'Bantay'**
+  /// **'Watch'**
   String get dryBantay;
 
-  /// Dryness alert level (danger); doc-quoted, Filipino in both locales
+  /// Dryness alert level (danger)
   ///
   /// In en, this message translates to:
-  /// **'Delikado'**
+  /// **'Danger'**
   String get dryDelikado;
 
-  /// Referral to the Municipal Agriculture Office; doc-quoted, Filipino in both locales
+  /// Referral to the Municipal Agriculture Office
   ///
   /// In en, this message translates to:
-  /// **'Kumonsulta sa MAO'**
+  /// **'Consult the MAO'**
   String get consultMao;
 
-  /// Heat safety advice on danger days; doc-quoted, Filipino in both locales
+  /// Heat safety advice on danger days
   ///
   /// In en, this message translates to:
-  /// **'Magtrabaho nang maaga'**
+  /// **'Work early'**
   String get workEarly;
 
-  /// El Niño outlook headline; doc-quoted, Filipino in both locales
+  /// El Niño outlook headline
   ///
   /// In en, this message translates to:
-  /// **'Inaasahan ang El Niño ngayong tag-araw'**
+  /// **'El Niño expected this dry season'**
   String get elNinoExpected;
 
   /// Home call-to-action that opens the recommendation questionnaire
@@ -509,7 +521,7 @@ abstract class AppLocalizations {
   /// Chart legend for El Niño seasons
   ///
   /// In en, this message translates to:
-  /// **'El Niño seasons'**
+  /// **'El Niño'**
   String get drynessChartElNino;
 
   /// Heat safety strip/section title
@@ -1061,7 +1073,7 @@ abstract class AppLocalizations {
   /// Library table column
   ///
   /// In en, this message translates to:
-  /// **'El Niño seasons'**
+  /// **'El Niño'**
   String get cropRiskElNinoSeasons;
 
   /// Library table column
@@ -1193,7 +1205,7 @@ abstract class AppLocalizations {
   /// Subtitle of the cold storage choice
   ///
   /// In en, this message translates to:
-  /// **'Matters for onion (Sibuyas) prices.'**
+  /// **'Matters for onion prices.'**
   String get questionColdStorageHint;
 
   /// Step 5 counter
@@ -1640,6 +1652,30 @@ abstract class AppLocalizations {
   /// **'Past dry seasons'**
   String get outlookPastSeasons;
 
+  /// Column header for the past season year
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get outlookPastColSeason;
+
+  /// Column header for the ENSO status of past seasons
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get outlookPastColStatus;
+
+  /// Button to expand a truncated list
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get showMore;
+
+  /// Button to collapse an expanded list
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get showLess;
+
   /// Heading of the live dryness card on the Outlook tab
   ///
   /// In en, this message translates to:
@@ -1663,6 +1699,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last 10-day periods'**
   String get outlookDekadsTitle;
+
+  /// Column header for the dekad date range
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get outlookDekadColPeriod;
+
+  /// Column header for the dekadal dryness index
+  ///
+  /// In en, this message translates to:
+  /// **'Dryness (D)'**
+  String get outlookDekadColDryness;
+
+  /// Column header for the dryness alert level
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get outlookDekadColStatus;
+
+  /// Column header for the heat table date
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get outlookHeatColDate;
+
+  /// Column header for the heat index value
+  ///
+  /// In en, this message translates to:
+  /// **'Heat index (°C)'**
+  String get outlookHeatColIndex;
+
+  /// Column header for the heat safety status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get outlookHeatColStatus;
 
   /// 10-day period label, e.g. '11–20 Nov'; month preformatted
   ///

@@ -52,9 +52,9 @@ void main() {
       demo,
     ]);
     expect(n, hasLength(2));
-    expect(n.map((x) => x.title), containsAll(['Mais: Water now', 'Mais: Crop failed']));
+    expect(n.map((x) => x.title), containsAll(['Corn: Water now', 'Corn: Crop failed']));
     expect(n.firstWhere((x) => x.title.contains('Water')).body, en.alertWaterStressBody);
-    expect(n.firstWhere((x) => x.title.contains('failed')).body, contains('Kumonsulta sa MAO'));
+    expect(n.firstWhere((x) => x.title.contains('failed')).body, contains('Consult the MAO'));
     expect(noticesFor(en, [demo]), isEmpty);
   });
 
@@ -73,7 +73,7 @@ void main() {
     expect(_in('alerts-badge', find.text('$unseen')), findsOneWidget);
 
     // Home: the tracked crop with its stage, and the latest alerts.
-    expect(_in('home-crops', find.text('Mais')), findsOneWidget);
+    expect(_in('home-crops', find.text('Corn')), findsOneWidget);
     expect(_in('home-crops', find.text('Maturing')), findsOneWidget);
     expect(_in('home-alerts', find.text('Ready to harvest')), findsOneWidget);
     expect(_key('home-alerts-empty'), findsNothing);
@@ -144,7 +144,7 @@ void main() {
     final demoIds = {for (final a in r.newAlerts) if (a.isDemo) noticeIdFor(a.id)};
     expect(notices.every((x) => realIds.contains(x.id)), isTrue);
     expect(notices.any((x) => demoIds.contains(x.id)), isFalse, reason: 'no demo notices');
-    expect(notices.every((x) => x.title.startsWith('Palay: ')), isTrue);
+    expect(notices.every((x) => x.title.startsWith('Rice: ')), isTrue);
 
     // Nothing new on the next refresh: no second notification.
     await h.state.refreshTracker();

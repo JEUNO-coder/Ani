@@ -58,6 +58,13 @@ void main() {
     expect(find.text('${rice.durationDays} days'), findsOneWidget);
     expect(find.textContaining('Nov 16 to Dec 16'), findsNWidgets(5));
     expect(find.text('Five dry-season crops for Guimba'), findsOneWidget);
+
+    // card rows have dividers and 12px normal font
+    final riceCard = find.byKey(const ValueKey('library-crop-rice'));
+    expect(find.descendant(of: riceCard, matching: find.byType(Divider)), findsNWidgets(2));
+    final sowText = tester.widget<Text>(find.descendant(of: riceCard, matching: find.text('Nov 16 to Dec 16')).first);
+    expect(sowText.style?.fontSize, 12);
+    expect(sowText.style?.fontWeight, FontWeight.normal);
   });
 
   testWidgets('detail sheet shows failed X of N by irrigation from the bundle', (tester) async {
@@ -76,6 +83,14 @@ void main() {
           findsOneWidget);
     }
     expect(find.text('Poaceae'), findsOneWidget);
+    final factText = tester.widget<Text>(find.text('Poaceae'));
+    expect(factText.style?.fontSize, 12);
+    expect(factText.style?.fontWeight, FontWeight.normal);
+
+    // sheet cards have dividers between rows
+    final riskTable = find.byKey(const ValueKey('crop-risk-table'));
+    expect(find.descendant(of: riskTable, matching: find.byType(Divider)), findsNWidgets(4));
+
     expect(find.text(AppLocalizations.of(tester.element(find.byKey(const ValueKey('crop-sheet')))).cropWaterNeedRiceNote),
         findsOneWidget);
     expect(tester.takeException(), isNull);

@@ -30,39 +30,36 @@ void main() {
     expect(en.townMunoz, 'Science City of Muñoz');
     expect(en.homeCta, 'What should I plant?');
     expect(en.onboardingStepOf(1, 2), 'Step 1 of 2');
-    expect(en.cropPalayGloss, 'Rice');
+    expect(en.cropPalay, 'Rice');
+    expect(en.cropSibuyas, 'Onion');
+    expect(en.cropMunggo, 'Mung bean');
+    expect(en.cropMais, 'Corn');
+    expect(en.cropKamote, 'Sweet potato');
+    expect(en.holdTitle, 'Hold: Do not plant yet');
+    expect(en.whyLabel, 'Why');
+    expect(en.dryBantay, 'Watch');
+    expect(en.dryDelikado, 'Danger');
+    expect(en.consultMao, 'Consult the MAO');
+    expect(en.workEarly, 'Work early');
+    expect(en.elNinoExpected, 'El Niño expected this dry season');
   });
 
   test('Filipino strings', () {
     expect(fil.onboardingContinue, 'Magpatuloy');
     expect(fil.navHome, 'Simula');
     expect(fil.onboardingStepOf(2, 2), 'Hakbang 2 sa 2');
-  });
-
-  test('doc-quoted strings are identical Filipino in both locales', () {
-    for (final pick in <String Function(AppLocalizations)>[
-      (l) => l.holdTitle,
-      (l) => l.whyLabel,
-      (l) => l.dryNormal,
-      (l) => l.dryBantay,
-      (l) => l.dryDelikado,
-      (l) => l.consultMao,
-      (l) => l.workEarly,
-      (l) => l.elNinoExpected,
-    ]) {
-      expect(pick(en), pick(fil));
-    }
-    expect(en.holdTitle, 'Huwag munang magtanim');
+    expect(fil.cropPalay, 'Palay');
+    expect(fil.cropSibuyas, 'Sibuyas');
+    expect(fil.cropMunggo, 'Munggo');
+    expect(fil.cropMais, 'Mais');
+    expect(fil.cropKamote, 'Kamote');
     expect(fil.holdTitle, 'Huwag munang magtanim');
-  });
-
-  test('crop names match planner.NAME in both locales', () {
-    for (final l in [en, fil]) {
-      expect(
-        [l.cropPalay, l.cropSibuyas, l.cropMunggo, l.cropMais, l.cropKamote],
-        ['Palay', 'Sibuyas', 'Munggo', 'Mais', 'Kamote'],
-      );
-    }
+    expect(fil.whyLabel, 'Bakit?');
+    expect(fil.dryBantay, 'Bantay');
+    expect(fil.dryDelikado, 'Delikado');
+    expect(fil.consultMao, 'Kumonsulta sa MAO');
+    expect(fil.workEarly, 'Magtrabaho nang maaga');
+    expect(fil.elNinoExpected, 'Inaasahan ang El Niño ngayong tag-araw');
   });
 
   test('plural placeholders', () {

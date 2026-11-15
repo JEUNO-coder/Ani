@@ -15,9 +15,10 @@ void main() {
 /// Root widget. Pass [state] to inject an [AppState] (tests); otherwise one
 /// is created and initialised from saved settings.
 class AniApp extends StatefulWidget {
-  const AniApp({super.key, this.state});
+  const AniApp({super.key, this.state, this.showSplash});
 
   final AppState? state;
+  final bool? showSplash;
 
   @override
   State<AniApp> createState() => _AniAppState();
@@ -56,7 +57,7 @@ class _AniAppState extends State<AniApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: const _Root(),
+          home: _Root(showSplash: widget.showSplash ?? (widget.state == null)),
         ),
       ),
     );
@@ -64,48 +65,129 @@ class _AniAppState extends State<AniApp> {
 }
 
 /// Chooses splash / onboarding / error / shell from [AppState].
-class _Root extends StatelessWidget {
-  const _Root();
+class _Root extends StatefulWidget {
+  const _Root({this.showSplash = true});
+
+  final bool showSplash;
+
+  @override
+  State<_Root> createState() => _RootState();
+}
+
+class _RootState extends State<_Root> {
+  late bool _splashDone = !widget.showSplash;
 
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
-    if (!state.initialized) return const _Splash();
+    if (!_splashDone) {
+      return SplashScreen(
+        onComplete: () {
+          if (mounted) setState(() => _splashDone = true);
+        },
+      );
+    }
+    if (!state.initialized) return const _SplashLoading();
     if (!state.onboardingComplete) return const OnboardingScreen();
     if (state.bundle != null) return const AppShell();
     if (state.bundleError != null) return _BundleError(state: state);
-    return const _Splash();
+    return const _SplashLoading();
   }
 }
 
-class _Splash extends StatelessWidget {
-  const _Splash();
+/// Loading indicator when initialized state is pending after splash.
+class _SplashLoading extends StatelessWidget {
+  const _SplashLoading();
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      key: ValueKey('splash'),
       backgroundColor: AniColors.cream,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Ani',
-              style: TextStyle(
-                fontFamily: aniFontFamily,
-                fontSize: 44,
-                fontWeight: FontWeight.w700,
-                color: AniColors.olive,
-              ),
+        child: SizedBox(
+          width: 28,
+          height: 28,
+          child: CircularProgressIndicator(strokeWidth: 3, color: AniColors.olive),
+        ),
+      ),
+    );
+  }
+}
+
+/// Splash / starting screen with animated fade-in and fade-out of logowithtext.
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({
+    super.key,
+    this.onComplete,
+    this.duration = const Duration(milliseconds: 2000),
+  });
+
+  final VoidCallback? onComplete;
+  final Duration duration;
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+
+    _opacity = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn)),
+        weight: 35,
+      ),
+      TweenSequenceItem(
+        tween: ConstantTween<double>(1.0),
+        weight: 30,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 1.0, end: 0.0).chain(CurveTween(curve: Curves.easeOut)),
+        weight: 35,
+      ),
+    ]).animate(_controller);
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        widget.onComplete?.call();
+      }
+    });
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: const ValueKey('splash'),
+      backgroundColor: AniColors.cream,
+      body: Center(
+        child: FadeTransition(
+          key: const ValueKey('splash-fade'),
+          opacity: _opacity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AniSpacing.xxl),
+            child: Image.asset(
+              'assets/icon/logowithtext.png',
+              width: 260,
+              fit: BoxFit.contain,
             ),
-            SizedBox(height: AniSpacing.lg),
-            SizedBox(
-              width: 28,
-              height: 28,
-              child: CircularProgressIndicator(strokeWidth: 3, color: AniColors.olive),
-            ),
-          ],
+          ),
         ),
       ),
     );

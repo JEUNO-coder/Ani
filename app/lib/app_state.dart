@@ -254,6 +254,25 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Clears saved settings, onboarding, and planner answers, returning to
+  /// the onboarding screen.
+  Future<void> logout() async {
+    await _store?.clear();
+    _localeCode = null;
+    _town = null;
+    _onboardingComplete = false;
+    _bundle = null;
+    _bundleError = null;
+    _plannerProfile = null;
+    _live = null;
+    _tracker = null;
+    _trackerService = null;
+    _trackerLoaded = false;
+    _lastRefresh = null;
+    _lastRefreshAt = null;
+    notifyListeners();
+  }
+
   /// The bundle for [town]: the loaded one if it is the current town, else
   /// loaded (and cached) without changing the app's town.
   Future<AniBundle> bundleFor(Town town) {

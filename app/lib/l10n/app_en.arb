@@ -92,6 +92,14 @@
   "@settingsChangeLanguage": {
     "description": "Settings action: re-pick the language"
   },
+  "settingsLogout": "Log out",
+  "@settingsLogout": {
+    "description": "Settings action: log out / reset session"
+  },
+  "settingsLogoutConfirm": "Are you sure you want to log out?",
+  "@settingsLogoutConfirm": {
+    "description": "Confirmation message when logging out from settings"
+  },
   "aboutTitle": "About and limits",
   "@aboutTitle": {
     "description": "About page title"
@@ -156,25 +164,25 @@
   "@aboutSourceMao": {
     "description": "About source"
   },
-  "cropPalay": "Palay",
+  "cropPalay": "Rice",
   "@cropPalay": {
-    "description": "Crop name (rice); Filipino name used in both locales, from planner.NAME"
+    "description": "Crop name (rice)"
   },
-  "cropSibuyas": "Sibuyas",
+  "cropSibuyas": "Onion",
   "@cropSibuyas": {
-    "description": "Crop name (onion); Filipino name used in both locales, from planner.NAME"
+    "description": "Crop name (onion)"
   },
-  "cropMunggo": "Munggo",
+  "cropMunggo": "Mung bean",
   "@cropMunggo": {
-    "description": "Crop name (mung bean); Filipino name used in both locales, from planner.NAME"
+    "description": "Crop name (mung bean)"
   },
-  "cropMais": "Mais",
+  "cropMais": "Corn",
   "@cropMais": {
-    "description": "Crop name (maize); Filipino name used in both locales, from planner.NAME"
+    "description": "Crop name (maize)"
   },
-  "cropKamote": "Kamote",
+  "cropKamote": "Sweet potato",
   "@cropKamote": {
-    "description": "Crop name (sweet potato); Filipino name used in both locales, from planner.NAME"
+    "description": "Crop name (sweet potato)"
   },
   "cropPalayGloss": "Rice",
   "@cropPalayGloss": {
@@ -188,7 +196,7 @@
   "@cropMunggoGloss": {
     "description": "English gloss for Munggo; UI may show it next to the name in English only"
   },
-  "cropMaisGloss": "Maize",
+  "cropMaisGloss": "Corn",
   "@cropMaisGloss": {
     "description": "English gloss for Mais; UI may show it next to the name in English only"
   },
@@ -196,37 +204,37 @@
   "@cropKamoteGloss": {
     "description": "English gloss for Kamote; UI may show it next to the name in English only"
   },
-  "holdTitle": "Huwag munang magtanim",
+  "holdTitle": "Hold: Do not plant yet",
   "@holdTitle": {
-    "description": "Hold screen title; doc-quoted, Filipino in both locales"
+    "description": "Hold screen title"
   },
-  "whyLabel": "Bakit?",
+  "whyLabel": "Why",
   "@whyLabel": {
-    "description": "Label for the reasons on a crop card; doc-quoted, Filipino in both locales"
+    "description": "Label for the reasons on a crop card"
   },
   "dryNormal": "Normal",
   "@dryNormal": {
-    "description": "Dryness alert level; doc-quoted, same in both locales"
+    "description": "Dryness alert level; same in both locales"
   },
-  "dryBantay": "Bantay",
+  "dryBantay": "Watch",
   "@dryBantay": {
-    "description": "Dryness alert level (watch); doc-quoted, Filipino in both locales"
+    "description": "Dryness alert level (watch)"
   },
-  "dryDelikado": "Delikado",
+  "dryDelikado": "Danger",
   "@dryDelikado": {
-    "description": "Dryness alert level (danger); doc-quoted, Filipino in both locales"
+    "description": "Dryness alert level (danger)"
   },
-  "consultMao": "Kumonsulta sa MAO",
+  "consultMao": "Consult the MAO",
   "@consultMao": {
-    "description": "Referral to the Municipal Agriculture Office; doc-quoted, Filipino in both locales"
+    "description": "Referral to the Municipal Agriculture Office"
   },
-  "workEarly": "Magtrabaho nang maaga",
+  "workEarly": "Work early",
   "@workEarly": {
-    "description": "Heat safety advice on danger days; doc-quoted, Filipino in both locales"
+    "description": "Heat safety advice on danger days"
   },
-  "elNinoExpected": "Inaasahan ang El Niño ngayong tag-araw",
+  "elNinoExpected": "El Niño expected this dry season",
   "@elNinoExpected": {
-    "description": "El Niño outlook headline; doc-quoted, Filipino in both locales"
+    "description": "El Niño outlook headline"
   },
   "homeCta": "What should I plant?",
   "@homeCta": {
@@ -293,7 +301,7 @@
   "@drynessChartTitle": {
     "description": "Outlook chart title"
   },
-  "drynessChartElNino": "El Niño seasons",
+  "drynessChartElNino": "El Niño",
   "@drynessChartElNino": {
     "description": "Chart legend for El Niño seasons"
   },
@@ -752,7 +760,7 @@
       }
     }
   },
-  "cropRiskElNinoSeasons": "El Niño seasons",
+  "cropRiskElNinoSeasons": "El Niño",
   "@cropRiskElNinoSeasons": {
     "description": "Library table column"
   },
@@ -850,7 +858,7 @@
   "@questionColdStorageLabel": {
     "description": "Step 4 section heading"
   },
-  "questionColdStorageHint": "Matters for onion (Sibuyas) prices.",
+  "questionColdStorageHint": "Matters for onion prices.",
   "@questionColdStorageHint": {
     "description": "Subtitle of the cold storage choice"
   },
@@ -1281,6 +1289,22 @@
   "@outlookPastSeasons": {
     "description": "Heading above the list of past dry seasons with their El Niño / La Niña tag"
   },
+  "outlookPastColSeason": "Season",
+  "@outlookPastColSeason": {
+    "description": "Column header for the past season year"
+  },
+  "outlookPastColStatus": "Status",
+  "@outlookPastColStatus": {
+    "description": "Column header for the ENSO status of past seasons"
+  },
+  "showMore": "Show more",
+  "@showMore": {
+    "description": "Button to expand a truncated list"
+  },
+  "showLess": "Show less",
+  "@showLess": {
+    "description": "Button to collapse an expanded list"
+  },
   "outlookLiveTitle": "Dryness now",
   "@outlookLiveTitle": {
     "description": "Heading of the live dryness card on the Outlook tab"
@@ -1306,6 +1330,30 @@
   "outlookDekadsTitle": "Last 10-day periods",
   "@outlookDekadsTitle": {
     "description": "Heading of the dekad list"
+  },
+  "outlookDekadColPeriod": "Period",
+  "@outlookDekadColPeriod": {
+    "description": "Column header for the dekad date range"
+  },
+  "outlookDekadColDryness": "Dryness (D)",
+  "@outlookDekadColDryness": {
+    "description": "Column header for the dekadal dryness index"
+  },
+  "outlookDekadColStatus": "Status",
+  "@outlookDekadColStatus": {
+    "description": "Column header for the dryness alert level"
+  },
+  "outlookHeatColDate": "Date",
+  "@outlookHeatColDate": {
+    "description": "Column header for the heat table date"
+  },
+  "outlookHeatColIndex": "Heat index (°C)",
+  "@outlookHeatColIndex": {
+    "description": "Column header for the heat index value"
+  },
+  "outlookHeatColStatus": "Status",
+  "@outlookHeatColStatus": {
+    "description": "Column header for the heat safety status"
   },
   "outlookDekadRange": "{from}–{to} {month}",
   "@outlookDekadRange": {

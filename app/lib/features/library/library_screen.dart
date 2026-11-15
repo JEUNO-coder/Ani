@@ -5,6 +5,8 @@ import '../../app_state.dart';
 import '../../data/bundle.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/theme.dart';
+import '../alerts/alerts_screen.dart';
+import '../home/settings_sheet.dart';
 import '../labels.dart';
 
 /// Crop library: the five crops with duration, sowing window, family and water
@@ -20,20 +22,42 @@ class LibraryScreen extends StatelessWidget {
     final state = AppScope.of(context);
     final bundle = state.bundle;
     final town = state.town;
-    return SafeArea(
-      child: ListView(
-        key: const ValueKey('library-list'),
-        padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.sm, AniSpacing.screen, AniSpacing.xxl),
-        children: [
-          Text(l.libraryTitle, style: theme.textTheme.headlineMedium),
-          if (town != null)
-            Padding(
-              padding: const EdgeInsets.only(top: AniSpacing.xs),
-              child: Text(l.cropLibrarySubtitle(l.townName(town)),
-                  style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
-            ),
-          const SizedBox(height: AniSpacing.lg),
-          if (bundle == null)
+    return Column(
+      children: [
+        AniAppHeader(
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icon/logowithtext.png',
+                key: const ValueKey('library-header-logo'),
+                height: 26,
+                fit: BoxFit.contain,
+              ),
+              const Spacer(),
+              const AlertsBell(),
+              IconButton(
+                key: const ValueKey('library-settings'),
+                tooltip: l.settingsTitle,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => showSettingsSheet(context),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            key: const ValueKey('library-list'),
+            padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.lg, AniSpacing.screen, AniSpacing.xxl),
+            children: [
+              Text(l.libraryTitle, style: theme.textTheme.headlineMedium),
+              if (town != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: AniSpacing.xs),
+                  child: Text(l.cropLibrarySubtitle(l.townName(town)),
+                      style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
+                ),
+              const SizedBox(height: AniSpacing.lg),
+              if (bundle == null)
             state.bundleError != null
                 ? AniCard(key: const ValueKey('library-error'), child: Text(l.bundleLoadError))
                 : const Padding(
@@ -49,7 +73,9 @@ class LibraryScreen extends StatelessWidget {
                 ),
         ],
       ),
-    );
+    ),
+  ],
+);
   }
 }
 
@@ -81,6 +107,15 @@ class _CropCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    final labelStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: AniColors.muted,
+    );
+    final valueStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+    );
     return AniCard(
       key: ValueKey('library-crop-${crop.id}'),
       padding: const EdgeInsets.all(AniSpacing.lg),
@@ -97,10 +132,26 @@ class _CropCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AniSpacing.sm),
-          Text('${l.cropSowingWindow}: ${sowWindowText(l, crop)}',
-              style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
-          Text('${l.cropWaterNeed}: ${waterNeedLabel(l, crop.id)}',
-              style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
+          const Divider(color: AniColors.line, height: 1, thickness: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
+            child: Row(
+              children: [
+                Expanded(child: Text(l.cropSowingWindow, style: labelStyle)),
+                Text(sowWindowText(l, crop), style: valueStyle),
+              ],
+            ),
+          ),
+          const Divider(color: AniColors.line, height: 1, thickness: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
+            child: Row(
+              children: [
+                Expanded(child: Text(l.cropWaterNeed, style: labelStyle)),
+                Text(waterNeedLabel(l, crop.id), style: valueStyle),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -145,8 +196,11 @@ class CropSheet extends StatelessWidget {
               child: Column(
                 children: [
                   _Fact(l.cropDurationLabel, l.cropDurationDays(crop.durationDays)),
+                  const Divider(color: AniColors.line, height: 1, thickness: 1),
                   _Fact(l.cropSowingWindow, sowWindowText(l, crop)),
+                  const Divider(color: AniColors.line, height: 1, thickness: 1),
                   _Fact(l.cropFamily, crop.family),
+                  const Divider(color: AniColors.line, height: 1, thickness: 1),
                   _Fact(l.cropWaterNeed, waterNeedLabel(l, crop.id)),
                 ],
               ),
@@ -169,23 +223,39 @@ class CropSheet extends StatelessWidget {
                       Expanded(flex: 3, child: Text(l.cropRiskOtherSeasons, style: _head(theme))),
                     ],
                   ),
-                  const Divider(height: AniSpacing.lg),
-                  for (final w in waters)
+                  const Divider(color: AniColors.line, height: 1, thickness: 1),
+                  for (var i = 0; i < waters.length; i++) ...[
+                    if (i > 0) const Divider(color: AniColors.line, height: 1, thickness: 1),
                     Padding(
-                      key: ValueKey('crop-risk-$w'),
-                      padding: const EdgeInsets.symmetric(vertical: AniSpacing.xs),
+                      key: ValueKey('crop-risk-${waters[i]}'),
+                      padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
                       child: Row(
                         children: [
-                          Expanded(flex: 5, child: Text(_waterName(l, w), style: theme.textTheme.bodyMedium)),
-                          for (final m in [bundle.risk.row(w, crop.id)!.elNino, bundle.risk.row(w, crop.id)!.other])
+                          Expanded(
+                            flex: 5,
+                            child: Text(
+                              _waterName(l, waters[i]),
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          for (final m in [bundle.risk.row(waters[i], crop.id)!.elNino, bundle.risk.row(waters[i], crop.id)!.other])
                             Expanded(
                               flex: 3,
-                              child: Text(l.cropFailedOf(m.failX, m.failN),
-                                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                              child: Text(
+                                l.cropFailedOf(m.failX, m.failN),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
                             ),
                         ],
                       ),
                     ),
+                  ],
                 ],
               ),
             ),
@@ -201,7 +271,7 @@ class CropSheet extends StatelessWidget {
   }
 
   static TextStyle? _head(ThemeData t) =>
-      t.textTheme.bodySmall?.copyWith(color: AniColors.muted, fontWeight: FontWeight.w600);
+      t.textTheme.bodySmall?.copyWith(color: AniColors.muted, fontSize: 12, fontWeight: FontWeight.w600);
 
   static String _waterName(AppLocalizations l, String w) => switch (w) {
         WaterScenario.rainfed => l.waterRainfed,
@@ -220,12 +290,21 @@ class _Fact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final labelStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: AniColors.muted,
+    );
+    final valueStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+    );
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AniSpacing.xs),
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted))),
-          Text(value, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+          Expanded(child: Text(label, style: labelStyle)),
+          Text(value, style: valueStyle),
         ],
       ),
     );

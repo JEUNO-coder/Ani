@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+ 
 import '../../app_state.dart';
 import '../../data/bundle.dart';
 import '../../l10n/app_localizations.dart';
@@ -7,7 +8,7 @@ import '../../theme/theme.dart';
 import '../about/about_screen.dart';
 import '../farm/demo_screen.dart';
 import '../labels.dart';
-
+ 
 /// Opens the settings sheet (change language / change town).
 Future<void> showSettingsSheet(BuildContext context) {
   return showModalBottomSheet<void>(
@@ -18,12 +19,12 @@ Future<void> showSettingsSheet(BuildContext context) {
     builder: (_) => const SettingsSheet(),
   );
 }
-
+ 
 /// Language and town pickers; language applies immediately, picking a town
 /// reloads the bundle and closes the sheet.
 class SettingsSheet extends StatelessWidget {
   const SettingsSheet({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
@@ -106,9 +107,91 @@ class SettingsSheet extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: AniSpacing.sm),
+            AniCard(
+              key: const ValueKey('settings-logout'),
+              padding: const EdgeInsets.all(AniSpacing.md),
+              onTap: () => _confirmLogout(context, state, l),
+              child: Row(
+                children: [
+                  const Icon(Icons.logout, color: AniColors.statusDelikado),
+                  const SizedBox(width: AniSpacing.md),
+                  Expanded(
+                    child: Text(
+                      l.settingsLogout,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: AniColors.statusDelikado,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: AniColors.muted),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+ 
+  Future<void> _confirmLogout(BuildContext context, AppState state, AppLocalizations l) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => Dialog(
+        backgroundColor: AniColors.paper,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AniRadius.lg)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AniSpacing.xl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l.settingsLogout,
+                style: Theme.of(dialogContext).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: AniSpacing.md),
+              Text(
+                l.settingsLogoutConfirm,
+                style: Theme.of(dialogContext).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: AniSpacing.xl),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      key: const ValueKey('settings-logout-cancel'),
+                      onPressed: () => Navigator.of(dialogContext).pop(false),
+                      child: Text(l.actionCancel),
+                    ),
+                  ),
+                  const SizedBox(width: AniSpacing.sm),
+                  Expanded(
+                    child: FilledButton(
+                      key: const ValueKey('settings-logout-confirm'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AniColors.statusDelikado,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () => Navigator.of(dialogContext).pop(true),
+                      child: Text(l.settingsLogout),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+ 
+    if (confirmed == true && context.mounted) {
+      Navigator.of(context).pop();
+      await state.logout();
+    }
+  }
 }
+ 

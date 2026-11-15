@@ -6,7 +6,7 @@ import 'package:ani/data/bundle.dart';
 import 'package:ani/data/planner_profile.dart';
 import 'package:ani/data/settings_store.dart';
 import 'package:ani/features/recommend/recommend_flow.dart';
-import 'package:ani/features/recommend/recommend_labels.dart' show pct0, peso;
+import 'package:ani/features/recommend/recommend_labels.dart';
 import 'package:ani/l10n/app_localizations.dart';
 import 'package:ani/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -150,13 +150,13 @@ void main() {
       _bundle(Town.guimba),
     );
     final card = want.cards.single;
+    final en = lookupAppLocalizations(const Locale('en'));
     expect(find.text('Suggested crops'), findsOneWidget);
     expect(find.byKey(const ValueKey('card-mungbean')), findsOneWidget);
-    expect(find.text('Munggo'), findsOneWidget);
     expect(find.text('Mung bean'), findsOneWidget);
-    expect(find.text('Bakit?'.toUpperCase()), findsOneWidget);
+    expect(find.text('WHY'), findsOneWidget);
     for (final w in card.why) {
-      expect(find.text(w), findsOneWidget);
+      expect(find.text(en.localizeWhy(w)), findsOneWidget);
     }
     expect(find.text('Failed in ${card.failed} of ${card.seasons} El Niño years'), findsOneWidget);
     expect(find.text('Likely range ${pct0(card.failLo)}–${pct0(card.failHi)}'), findsOneWidget);
@@ -253,10 +253,10 @@ void main() {
         expect(find.byKey(ValueKey('card-${c.crop}')), findsOneWidget);
         expect(find.text('No. ${i + 1}'.toUpperCase()), findsOneWidget);
       }
-      expect(find.text('Sibuyas'), findsOneWidget);
+      expect(find.text('Onion'), findsOneWidget);
       expect(find.byKey(const ValueKey('card-onion-price-risk')), findsOneWidget);
       expect(find.text('No cold storage: high price risk'), findsOneWidget);
-      expect(find.text('Bakit?'.toUpperCase()), findsNWidgets(3));
+      expect(find.text('WHY'), findsNWidgets(3));
       expect(find.text('Bongabon · Irrigate as needed'), findsOneWidget);
     });
 
@@ -280,12 +280,12 @@ void main() {
       const p = PlannerProfile(muni: 'munoz', water: 'rainfed');
       final r = planWithBundle(p, _bundle(Town.munoz));
       await _start(tester, locale: 'en', town: 'munoz', home: ResultScreen(saved: saved(p), result: r));
-      expect(find.text('Huwag munang magtanim'), findsOneWidget);
+      expect(find.text('Hold: Do not plant yet'), findsOneWidget);
       expect(find.text('The chance of crop failure is too high for your water supply this El Niño.'),
           findsOneWidget);
-      expect(find.text('Ruled out: Mais, Munggo, Sibuyas, Palay, Kamote'), findsOneWidget);
+      expect(find.text('Ruled out: Corn, Mung bean, Onion, Rice, Sweet potato'), findsOneWidget);
       expect(find.byKey(const ValueKey('hold-tip')), findsOneWidget);
-      expect(find.text('Kumonsulta sa MAO'), findsOneWidget);
+      expect(find.text('Consult the MAO'), findsOneWidget);
     });
 
     testWidgets('small phone (360x640, Filipino): no overflow on any step or the cards', (tester) async {

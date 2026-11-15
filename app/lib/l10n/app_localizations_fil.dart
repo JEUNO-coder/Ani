@@ -77,6 +77,12 @@ class AppLocalizationsFil extends AppLocalizations {
   String get settingsChangeLanguage => 'Palitan ang wika';
 
   @override
+  String get settingsLogout => 'Mag-log out';
+
+  @override
+  String get settingsLogoutConfirm => 'Sigurado ka bang nais mong mag-log out?';
+
+  @override
   String get aboutTitle => 'Tungkol at mga limitasyon';
 
   @override
@@ -241,7 +247,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get drynessChartTitle => 'Buwanang sukat ng pagkatuyo';
 
   @override
-  String get drynessChartElNino => 'Mga panahon ng El Niño';
+  String get drynessChartElNino => 'El Niño';
 
   @override
   String get heatSafetyTitle => 'Kaligtasan sa init';
@@ -559,7 +565,7 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get cropRiskElNinoSeasons => 'Mga panahong El Niño';
+  String get cropRiskElNinoSeasons => 'El Niño';
 
   @override
   String get cropRiskOtherSeasons => 'Ibang mga panahon';
@@ -916,6 +922,18 @@ class AppLocalizationsFil extends AppLocalizations {
   String get outlookPastSeasons => 'Mga nakaraang tag-araw';
 
   @override
+  String get outlookPastColSeason => 'Tag-araw';
+
+  @override
+  String get outlookPastColStatus => 'Katayuan';
+
+  @override
+  String get showMore => 'Ipakita ang iba pa';
+
+  @override
+  String get showLess => 'Ipakita nang mas kaunti';
+
+  @override
   String get outlookLiveTitle => 'Tuyot ngayon';
 
   @override
@@ -930,6 +948,24 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get outlookDekadsTitle => 'Mga huling 10-araw na yugto';
+
+  @override
+  String get outlookDekadColPeriod => 'Petsa';
+
+  @override
+  String get outlookDekadColDryness => 'Tuyot (D)';
+
+  @override
+  String get outlookDekadColStatus => 'Katayuan';
+
+  @override
+  String get outlookHeatColDate => 'Petsa';
+
+  @override
+  String get outlookHeatColIndex => 'Init (°C)';
+
+  @override
+  String get outlookHeatColStatus => 'Katayuan';
 
   @override
   String outlookDekadRange(int from, int to, String month) {

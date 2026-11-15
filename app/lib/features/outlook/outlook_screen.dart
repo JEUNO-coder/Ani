@@ -8,6 +8,8 @@ import '../../data/bundle.dart';
 import '../../data/live_outlook.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/theme.dart';
+import '../alerts/alerts_screen.dart';
+import '../home/settings_sheet.dart';
 import '../labels.dart';
 import 'heat_safety.dart';
 
@@ -42,15 +44,37 @@ class _OutlookScreenState extends State<OutlookScreen> {
     final theme = Theme.of(context);
     final bundle = state.bundle;
     final town = state.town;
-    return SafeArea(
-      child: ListView(
-        key: const ValueKey('outlook-list'),
-        padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.sm, AniSpacing.screen, AniSpacing.xxl),
-        children: [
-          Text(l.outlookTitle, style: theme.textTheme.headlineMedium),
-          if (town != null) Text(l.townName(town), style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
-          const SizedBox(height: AniSpacing.lg),
-          if (bundle == null)
+    return Column(
+      children: [
+        AniAppHeader(
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icon/logowithtext.png',
+                key: const ValueKey('outlook-header-logo'),
+                height: 26,
+                fit: BoxFit.contain,
+              ),
+              const Spacer(),
+              const AlertsBell(),
+              IconButton(
+                key: const ValueKey('outlook-settings'),
+                tooltip: l.settingsTitle,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => showSettingsSheet(context),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            key: const ValueKey('outlook-list'),
+            padding: const EdgeInsets.fromLTRB(AniSpacing.screen, AniSpacing.lg, AniSpacing.screen, AniSpacing.xxl),
+            children: [
+              Text(l.outlookTitle, style: theme.textTheme.headlineMedium),
+              if (town != null) Text(l.townName(town), style: theme.textTheme.bodyMedium?.copyWith(color: AniColors.muted)),
+              const SizedBox(height: AniSpacing.lg),
+              if (bundle == null)
             const SizedBox.shrink()
           else ...[
             _EnsoCard(enso: bundle.enso),
@@ -65,7 +89,9 @@ class _OutlookScreenState extends State<OutlookScreen> {
           ],
         ],
       ),
-    );
+    ),
+  ],
+);
   }
 }
 
@@ -117,14 +143,23 @@ class _EnsoCard extends StatelessWidget {
   }
 }
 
-class _PastSeasons extends StatelessWidget {
+class _PastSeasons extends StatefulWidget {
   const _PastSeasons({required this.enso});
 
   final Enso enso;
 
   @override
+  State<_PastSeasons> createState() => _PastSeasonsState();
+}
+
+class _PastSeasonsState extends State<_PastSeasons> {
+  bool _expanded = false;
+
+  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    final all = widget.enso.past.reversed.toList();
+    final items = _expanded ? all : all.take(5).toList();
     return AniCard(
       key: const ValueKey('outlook-past'),
       child: Column(
@@ -132,14 +167,84 @@ class _PastSeasons extends StatelessWidget {
         children: [
           Eyebrow(l.outlookPastSeasons),
           const SizedBox(height: AniSpacing.sm),
-          Wrap(
-            spacing: AniSpacing.xs,
-            runSpacing: AniSpacing.xs,
-            children: [
-              for (final s in enso.past.reversed)
-                AniPill('${s.season} ${l.ensoTagName(s.tag)}', color: _tagColor(s.tag)),
-            ],
+          const _PastSeasonHeaderRow(),
+          const Divider(color: AniColors.line, height: 1, thickness: 1),
+          for (var i = 0; i < items.length; i++) ...[
+            if (i > 0) const Divider(color: AniColors.line, height: 1, thickness: 1),
+            _PastSeasonRow(season: items[i]),
+          ],
+          if (all.length > 5) ...[
+            const Divider(color: AniColors.line, height: 1, thickness: 1),
+            const SizedBox(height: AniSpacing.xs),
+            Center(
+              child: TextButton.icon(
+                key: const ValueKey('outlook-past-toggle'),
+                onPressed: () => setState(() => _expanded = !_expanded),
+                icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more, size: 18),
+                label: Text(_expanded ? l.showLess : l.showMore),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _PastSeasonHeaderRow extends StatelessWidget {
+  const _PastSeasonHeaderRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final style = theme.textTheme.labelSmall?.copyWith(
+      color: AniColors.muted,
+      fontWeight: FontWeight.w600,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.xs),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              l.outlookPastColSeason,
+              key: const ValueKey('outlook-past-header-season'),
+              style: style,
+            ),
           ),
+          Text(
+            l.outlookPastColStatus,
+            key: const ValueKey('outlook-past-header-status'),
+            style: style,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PastSeasonRow extends StatelessWidget {
+  const _PastSeasonRow({required this.season});
+
+  final EnsoPastSeason season;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Padding(
+      key: ValueKey('past-season-${season.season}'),
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              season.season,
+              style: theme.textTheme.bodyMedium,
+            ),
+          ),
+          AniPill(l.ensoTagName(season.tag), color: _tagColor(season.tag)),
         ],
       ),
     );
@@ -213,10 +318,72 @@ class LiveDrynessCard extends StatelessWidget {
           Text(source, key: const ValueKey('outlook-live-source'), style: theme.textTheme.bodySmall),
           if (dekads.isNotEmpty) ...[
             const SizedBox(height: AniSpacing.md),
+            Divider(color: fg.withValues(alpha: 0.25), height: 1, thickness: 1),
+            const SizedBox(height: AniSpacing.md),
             Eyebrow(l.outlookDekadsTitle, color: fg),
-            const SizedBox(height: AniSpacing.xs),
-            for (final k in dekads) _DekadRow(dekad: k),
+            const SizedBox(height: AniSpacing.sm),
+            _DekadHeaderRow(color: fg),
+            Divider(color: fg.withValues(alpha: 0.25), height: 1, thickness: 1),
+            for (var i = 0; i < dekads.length; i++) ...[
+              if (i > 0)
+                Divider(
+                  color: fg.withValues(alpha: 0.25),
+                  height: 1,
+                  thickness: 1,
+                ),
+              _DekadRow(dekad: dekads[i]),
+            ],
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DekadHeaderRow extends StatelessWidget {
+  const _DekadHeaderRow({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final style = theme.textTheme.labelSmall?.copyWith(
+      color: color.withValues(alpha: 0.8),
+      fontWeight: FontWeight.w600,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.xs),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              l.outlookDekadColPeriod,
+              key: const ValueKey('outlook-header-period'),
+              style: style,
+            ),
+          ),
+          SizedBox(
+            width: 72,
+            child: Text(
+              l.outlookDekadColDryness,
+              key: const ValueKey('outlook-header-dryness'),
+              textAlign: TextAlign.end,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AniSpacing.sm),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 64, maxWidth: 84),
+            child: Text(
+              l.outlookDekadColStatus,
+              key: const ValueKey('outlook-header-status'),
+              textAlign: TextAlign.end,
+              style: style,
+            ),
+          ),
         ],
       ),
     );
@@ -239,7 +406,7 @@ class _DekadRow extends StatelessWidget {
     final level = dekad.instant;
     final color = level == null ? AniColors.muted : drynessColor(level.id);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(vertical: AniSpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -249,10 +416,17 @@ class _DekadRow extends StatelessWidget {
           if (d == null)
             Text(l.outlookDekadNoData, style: theme.textTheme.bodySmall?.copyWith(color: AniColors.muted))
           else ...[
-            Text(_signed(d, 2), style: theme.textTheme.titleSmall?.copyWith(color: color)),
+            SizedBox(
+              width: 72,
+              child: Text(
+                _signed(d, 2),
+                textAlign: TextAlign.end,
+                style: theme.textTheme.titleSmall?.copyWith(color: color),
+              ),
+            ),
             const SizedBox(width: AniSpacing.sm),
             ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 64, maxWidth: 96),
+              constraints: const BoxConstraints(minWidth: 64, maxWidth: 84),
               child: Text(
                 l.drynessLabelName(level!.id),
                 textAlign: TextAlign.end,
